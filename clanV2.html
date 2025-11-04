@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sacred Law - Discord Clan</title>
+    <!-- Imports Google Fonts for Playfair Display (Serif) and Inter (Sans-Serif) -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /*
+        ========================================================
+        CSS STYLES - Black and White Theme, Purity vs. Chaos
+        ========================================================
+        */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Fixed Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 25px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            padding: 0 40px;
+        }
+
+        .nav-link {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-family: 'Playfair Display', serif;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 10px 0;
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #ffffff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            opacity: 0.7;
+        }
+
+        /* Page System */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding-top: 100px;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* The Apex - Hero Section */
+        .apex-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 40px;
+            position: relative;
+        }
+
+        .apex-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        /* New: Clan Icon Styling */
+        .clan-icon-container {
+            margin-bottom: 30px; 
+            padding: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.4); 
+            border-radius: 50%; 
+            line-height: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .clan-icon-container:hover {
+            transform: scale(1.05);
+        }
+
+        .clan-icon-img {
+            width: 350px; 
+            height: 350px;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+        }
+
+        /* Scales Animation - Purity/Chaos Theme */
+        .scales-animation {
+            width: 350px;
+            height: 350px;
+            position: relative;
+            margin-bottom: 50px; 
+            filter: drop-shadow(0 20px 40px rgba(255,255,255,0.1));
+        }
+
+        .scale-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px;
+            height: 220px;
+            background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.6) 100%);
+            border-radius: 3px;
+        }
+
+        .scale-beam {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 320px;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.6) 0%, #ffffff 50%, rgba(255,255,255,0.6) 100%);
+            animation: oscillate 5s ease-in-out infinite;
+            transform-origin: center;
+            border-radius: 2px;
+        }
+
+        @keyframes oscillate {
+            0%, 100% { transform: translateX(-50%) rotate(-2deg); }
+            50% { transform: translateX(-50%) rotate(2deg); }
+        }
+
+        .scale-pan {
+            position: absolute;
+            width: 110px;
+            height: 90px;
+            top: 25%;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .scale-pan.left { /* Purity Side */
+            left: -10px;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+        }
+
+        .scale-pan.right { /* Chaos Side */
+            right: -10px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            border: 2px solid rgba(255,255,255,0.3);
+            clip-path: polygon(5% 0%, 95% 0%, 100% 100%, 0% 100%);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .clan-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 5.5em;
+            font-weight: 900;
+            letter-spacing: 12px;
+            margin-bottom: 30px;
+            background: linear-gradient(180deg, #ffffff 0%, #aaaaaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .clan-tagline {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.3em;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: #999999;
+            max-width: 600px;
+            line-height: 1.8;
+        }
+
+        /* The Creed Section */
+        .creed-section {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 120px 40px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5em;
+            font-weight: 900;
+            letter-spacing: 6px;
+            margin-bottom: 80px;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffffff, transparent);
+        }
+
+        .creed-content {
+            background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.05) 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 70px 80px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .creed-content p {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.35em;
+            line-height: 2.4;
+            margin-bottom: 35px;
+            font-weight: 300;
+            color: #e0e0e0;
+        }
+
+        .creed-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Sacred Law Section */
+        .law-section {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 120px 40px;
+        }
+
+        .law-grid {
+            display: grid;
+            gap: 25px;
+            margin-top: 60px;
+        }
+
+        .law-item {
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.05) 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            min-height: 130px;
+        }
+
+        .law-item:hover {
+            transform: translateX(10px);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 10px 40px rgba(255,255,255,0.1);
+        }
+
+        .law-number {
+            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+            border-right: 1px solid rgba(255,255,255,0.2);
+            padding: 35px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        /* Law Section Description - UPDATED FOR CENTERING */
+        .law-description {
+            padding: 35px 45px;
+            display: flex;
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center; 
+            font-family: 'Inter', sans-serif;
+            font-size: 1.15em;
+            line-height: 1.9;
+            font-weight: 300;
+            color: #d0d0d0;
+        }
+
+        /* Scale of War Section */
+        .war-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 120px 40px;
+        }
+
+        .victory-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.06) 100%);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 25px;
+            margin-bottom: 80px;
+            padding: 60px 70px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        .victory-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .victory-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            font-weight: 900;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .victory-date {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1em;
+            color: #999999;
+            letter-spacing: 2px;
+        }
+
+        .victory-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 40px 30px;
+            text-align: center;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 15px 40px rgba(255,255,255,0.1);
+        }
+
+        .stat-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1em;
+            margin-bottom: 20px;
+            color: #aaaaaa;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .stat-value {
+            font-family: 'Inter', sans-serif;
+            font-size: 2.8em;
+            font-weight: 700;
+        }
+
+        .combatants-section {
+            margin-bottom: 60px;
+        }
+
+        .combatants-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            text-align: center;
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .combatants-table {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .combatant {
+            background: linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 30px;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.25em;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .combatant:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        /* Quotes Section - Purity (White) vs. Chaos (Black) */
+        .judgement-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .judgement-box {
+            padding: 50px 45px;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+        }
+
+        .judgement-box.purity {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+            color: #000000;
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 20px 60px rgba(255,255,255,0.2);
+        }
+
+        .judgement-box.chaos {
+            background: linear-gradient(135deg, #0a0a0a 0%, #000000 100%);
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+        }
+
+        .judgement-box:hover {
+            transform: translateY(-8px);
+        }
+
+        .judgement-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .judgement-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.15em;
+            line-height: 2;
+            font-style: italic;
+            font-weight: 300;
+        }
+
+        .judgement-box.purity .judgement-text {
+            color: #333333;
+        }
+
+        .judgement-box.chaos .judgement-text {
+            color: #cccccc;
+        }
+
+        /* Hierarchy Section */
+        .hierarchy-section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 120px 40px;
+        }
+
+        .hierarchy-tier {
+            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.06) 100%);
+            border: 1px solid rgba(255,255,255,0.15);
+            margin-bottom: 35px;
+            padding: 50px 60px;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            align-items: center;
+            gap: 50px;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+        }
+
+        .hierarchy-tier:hover {
+            transform: translateX(15px);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 20px 60px rgba(255,255,255,0.1);
+        }
+
+        .tier-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2em;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding-right: 40px;
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .tier-description {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.2em;
+            line-height: 2;
+            font-weight: 300;
+            color: #d0d0d0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .nav-container {
+                flex-wrap: wrap;
+                gap: 30px;
+            }
+
+            .clan-title {
+                font-size: 3.5em;
+                letter-spacing: 6px;
+            }
+
+            .law-item {
+                grid-template-columns: 1fr;
+            }
+
+            .law-number {
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.2);
+            }
+
+            .victory-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .combatants-table {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .judgement-section {
+                grid-template-columns: 1fr;
+            }
+
+            .hierarchy-tier {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .tier-name {
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.2);
+                padding-right: 0;
+                padding-bottom: 25px;
+            }
+
+            .creed-content {
+                padding: 50px 40px;
+            }
+
+            .victory-card {
+                padding: 40px 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fixed Navigation -->
+    <nav>
+        <div class="nav-container">
+            <button class="nav-link active" onclick="showPage('apex')">The Apex</button>
+            <button class="nav-link" onclick="showPage('creed')">The Creed</button>
+            <button class="nav-link" onclick="showPage('law')">The Sacred Law</button>
+            <button class="nav-link" onclick="showPage('war')">The Scale of War</button>
+            <button class="nav-link" onclick="showPage('hierarchy')">Hierarchy</button>
+        </div>
+    </nav>
+
+    <!-- The Apex (Hero) -->
+    <div id="apex" class="page active">
+        <div class="apex-section">
+            
+            <!-- CLAN ICON INTEGRATION -->
+            <div class="clan-icon-container">
+                <img src="https://media.discordapp.net/attachments/1319050479342452820/1435303693967822858/Untitled67_20251104112350.jpg?ex=690b7a3b&is=690a28bb&hm=1a9e5cc2eeefeb41c9bfc188435b3ec5da82d5da3bae3e5969bb5220c9476741&=&format=webp&width=860&height=1290" alt="The Sacred Law Clan Icon" class="clan-icon-img">
+            </div>
+            
+            <!-- THE SCALES OF JUDGEMENT (CSS ANIMATION) -->
+            
+
+            <h1 class="clan-title">THE SACRED LAW</h1>
+            <p class="clan-tagline">WHEREIN BALANCE, HONOR, AND LOYALTY PREVAIL</p>
+        </div>
+    </div>
+
+    <!-- The Creed (What the Clan Is) -->
+    <div id="creed" class="page">
+        <div class="creed-section">
+            <h2 class="section-title">The Equilibrium Mandate</h2>
+            <div class="creed-content">
+                <p>
+                    The Sacred Law is...
+                </p>
+                <p>
+                    Founded upon ...
+                </p>
+                <p>
+                    Every member is a guardian of the balance. We do represent excellence. Join us, and become part of something greater..
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Sacred Law (Rules) -->
+    <div id="law" class="page">
+        <div class="law-section">
+            <h2 class="section-title">The Sacred Law</h2>
+            <div class="law-grid">
+                <!-- RULE 1: Honor Above All -->
+                <div class="law-item">
+                    <div class="law-number">I. HONOR ABOVE ALL</div>
+                    <div class="law-description">Treat every member with respect. Insults, hate, or drama are forbidden.</div>
+                </div>
+                <!-- RULE 2: Speak with Wisdom -->
+                <div class="law-item">
+                    <div class="law-number">II. SPEAK WITH WISDOM</div>
+                    <div class="law-description">Use meaningful words. Spamming, trolling, or random chaos breaks the balance.</div>
+                </div>
+                <!-- RULE 3: Loyalty to the Clan -->
+                <div class="law-item">
+                    <div class="law-number">III. LOYALTY TO THE CLAN</div>
+                    <div class="law-description">
+                        Support the clan in wars, events, and decisions. Your loyalty maintains the scales.</div>
+                </div>
+                <!-- RULE 4: Respect the Hierarchy -->
+                <div class="law-item">
+                    <div class="law-number">IV. RESPECT THE HIERARCHY</div>
+                    <div class="law-description">Leaders and officers are judges — follow guidance respectfully.</div>
+                </div>
+                <!-- RULE 5: Keep Peace -->
+                <div class="law-item">
+                    <div class="law-number">V. KEEP PEACE</div>
+                    <div class="law-description">Conflicts must be solved with words, not fights. Officers will judge serious disputes.</div>
+                </div>
+                <!-- RULE 6: Protect Allies -->
+                <div class="law-item">
+                    <div class="law-number">VI. PROTECT ALLIES</div>
+                    <div class="law-description">Respect and support our allies. Disrespecting them harms the clan.</div>
+                </div>
+                <!-- RULE 7: Stay Active -->
+                <div class="law-item">
+                    <div class="law-number">VII. STAY ACTIVE</div>
+                    <div class="law-description">
+                        Inactive members risk removal. Presence is part of the balance.</div>
+                </div>
+                <!-- RULE 8: Sacred Conduct -->
+                <div class="law-item">
+                    <div class="law-number">VIII. SACRED CONDUCT</div>
+                    <div class="law-description">No NSFW, harassment, or illegal links. The clan is a safe and divine space.</div>
+                </div>
+                <!-- RULE 9: Uphold the Balance -->
+                <div class="law-item">
+                    <div class="law-number">IX. UPHOLD THE BALANCE</div>
+                    <div class="law-description">Every action matters — fairness, loyalty, and respect keep the clan strong.</div>
+                </div>
+                <!-- RULE 10: Use Channels Properly -->
+                <div class="law-item">
+                    <div class="law-number">X. USE CHANNELS PROPERLY</div>
+                    <div class="law-description">
+                        Keep chats in the right channels. Random posts disrupt order.</div>
+                </div>
+                <!-- RULE 11: No Self-Promotion -->
+                <div class="law-item">
+                    <div class="law-number">XI. NO SELF-PROMOTION</div>
+                    <div class="law-description">Advertising or promoting other servers without permission is forbidden.</div>
+                </div>
+                <!-- RULE 12: Obey the Law -->
+                <div class="law-item">
+                    <div class="law-number">XII. OBEY THE LAW</div>
+                    <div class="law-description">The clan’s rules are sacred. Breaking them may lead to warning or removal.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Scale of War (Victories/Fights) -->
+    <div id="war" class="page">
+        <div class="war-section">
+            <h2 class="section-title">The Scale of War</h2>
+            
+            <!-- VICTORY CARD TEMPLATE -->
+            <div class="victory-card">
+                <div class="victory-header">
+                    <h3 class="victory-title">THE CLEANSING OF BATTLEGROUND ALPHA</h3>
+                    <p class="victory-date">SCRIM #001 | 02/11/2025</p>
+                </div>
+
+                <div class="victory-stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Nature</div>
+                        <div class="stat-value">SCRIM</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Outcome</div>
+                        <div class="stat-value">VICTORY</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Score</div>
+                        <div class="stat-value">15-0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">MVP</div>
+                        <div class="stat-value">PlayerName</div>
+                    </div>
+                </div>
+
+                <div class="combatants-section">
+                    <h4 class="combatants-title">The Combatants</h4>
+                    <div class="combatants-table">
+                        <div class="combatant">PlayerOne</div>
+                        <div class="combatant">PlayerTwo</div>
+                        <div class="combatant">PlayerThree</div>
+                        <div class="combatant">PlayerFour</div>
+                        <div class="combatant">PlayerFive</div>
+                        <div class="combatant">PlayerSix</div>
+                        <!-- Add more combatant divs as needed -->
+                    </div>
+                </div>
+
+                <!-- LEADER/CO-LEADER QUOTES -->
+                <div class="judgement-section">
+                    <div class="judgement-box purity">
+                        <div class="judgement-title">CommanderName Offers This Wisdom (Leader)</div>
+                        <div class="judgement-text">
+                            Behold, a performance most excellent by all who gathered.
+                        </div>
+                    </div>
+                    <div class="judgement-box chaos">
+                        <div class="judgement-title">ViceCommanderName Speaks of the Action (Co-Leader)</div>
+                        <div class="judgement-text">
+                            Behold, a performance most excellent by all who gathered. 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- You can duplicate the 'victory-card' div to add more past victories -->
+        </div>
+    </div>
+
+    <!-- The Hierarchy of Order (Roles) -->
+    <div id="hierarchy" class="page">
+        <div class="hierarchy-section">
+            <h2 class="section-title">The Hierarchy of Order</h2>
+            
+            <div class="hierarchy-tier">
+                <div class="tier-name">The Balance Keepers</div>
+                <div class="tier-description">Leader and Co-Leader ..</div>
+            </div>
+
+            <div class="hierarchy-tier">
+                <div class="tier-name">The Judges</div>
+                <div class="tier-description">Officers and advisors ..</div>
+            </div>
+
+            <div class="hierarchy-tier">
+                <div class="tier-name">The Chosen</div>
+                <div class="tier-description">Elite and core members ..</div>
+            </div>
+
+            <div class="hierarchy-tier">
+                <div class="tier-name">The Initiates</div>
+                <div class="tier-description">Standard members who uphold the Sacred Law and walk in righteousness ..</div>
+            </div>
+        </div>
+    </div>
+
+    <!--
+    ========================================================
+    JAVASCRIPT FOR PAGE SWITCHING
+    ========================================================
+    -->
+    <script>
+        function showPage(pageId) {
+            // Remove 'active' class from all page content containers
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Remove 'active' class from all navigation links
+            const links = document.querySelectorAll('.nav-link');
+            links.forEach(link => link.classList.remove('active'));
+            
+            // Add 'active' class to the target page content
+            document.getElementById(pageId).classList.add('active');
+            
+            // Add 'active' class to the clicked navigation button
+            // 'event.target' refers to the button that was clicked
+            if (event && event.target) {
+                 event.target.classList.add('active');
+            }
+        }
+
+        // Initialize on page load (sets the first nav link to active if page is refreshed)
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialLink = document.querySelector('.nav-link');
+            if (initialLink) {
+                initialLink.classList.add('active');
+            }
+        });
+    </script>
+
+</body>
+</html>
